@@ -33,7 +33,7 @@ function flatten(obj) {
     let release = obj.compiledRelease;
 
     if(release.tender.status == "complete") {
-        if(release.awards.length > 0) {
+        if(release.awards && release.awards.length > 0) {
             release.awards.map( award => {
                 if(award.status == "active") {
                     let contract = JSON.parse(JSON.stringify(release));
