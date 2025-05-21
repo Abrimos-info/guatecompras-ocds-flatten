@@ -119,10 +119,11 @@ function csvTransform(data) {
 function flatten(obj) {
     let flatContracts = [];
     let release = obj;
+    
     if(obj.hasOwnProperty('compiledRelease'))
         release = obj.compiledRelease;
 
-    if(release.tender.status == "complete") {
+    if(release?.tender?.status == "complete") {
         if(release.awards && release.awards.length > 0) {
             release.awards.map( award => {
                 if(award.status == "active") {
