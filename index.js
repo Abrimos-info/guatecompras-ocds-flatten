@@ -79,6 +79,9 @@ function csvTransform(data) {
             }
         } )
     }
+    else if(data.buyer) 
+        newObj.entidad_compradora = data.buyer.name;
+    
     newObj.nog_concurso = data.ocid.replace('ocds-xqjsxa-', '');
     newObj.descripcion = removeBreaks(data.awards.title);
     newObj.modalidad = data.tender.procurementMethodDetails;
