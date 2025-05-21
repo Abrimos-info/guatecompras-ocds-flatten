@@ -84,7 +84,7 @@ function csvTransform(data) {
     newObj.modalidad = data.tender.procurementMethodDetails;
     
     if(data.parties?.supplier) {
-        newObj.nit = data.parties.supplier[0].id.replace('GT-NIT-', '');
+        newObj.nit = parseSupplierID(data.parties.supplier[0].id);
         newObj.nombre = data.parties.supplier[0].name;
     }
     
@@ -133,13 +133,17 @@ function flatten(obj) {
                     contract.contracts = findContract(release, award);
 
                     let suppliers = [];
-                    contract.parties.supplier.map( s => {
-                        award.suppliers.map( a => {
-                            if(a.id == s.id) suppliers.push(s);
+                    if(contract.parties.supplier?.length > 0) {
+                        contract.parties.supplier.map( s => {
+                            award.suppliers.map( a => {
+                                if(a.id == s.id) suppliers.push(s);
+                            } )
                         } )
-                    } )
-                    if(suppliers.length > 0)
-                        contract.parties.supplier = suppliers;
+                        if(suppliers.length > 0)
+                            contract.parties.supplier = suppliers;
+                    }
+                    else
+                        contract.parties.supplier = award.suppliers;
 
                     flatContracts.push(contract)
                 }
@@ -171,6 +175,11 @@ function findContract(release, award) {
         } );
     }
     return contract;
+}
+
+function parseSupplierID(str) {
+    let parts = str.split('-');
+    return parts[parts.length - 1];
 }
 
 function getCategory(cat) {
