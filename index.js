@@ -138,7 +138,8 @@ function flatten(obj) {
                             if(a.id == s.id) suppliers.push(s);
                         } )
                     } )
-                    contract.parties.supplier = suppliers;
+                    if(suppliers.length > 0)
+                        contract.parties.supplier = suppliers;
 
                     flatContracts.push(contract)
                 }
