@@ -87,7 +87,7 @@ function csvTransform(data) {
     newObj.modalidad = data.tender.procurementMethodDetails;
     
     if(data.parties?.supplier) {
-        newObj.nit = parseSupplierID(data.parties.supplier[0].id);
+        newObj.nit = getSupplierID(data.parties.supplier[0]);
         newObj.nombre = data.parties.supplier[0].name;
     }
     
@@ -180,7 +180,9 @@ function findContract(release, award) {
     return contract;
 }
 
-function parseSupplierID(str) {
+function getSupplierID(party) {
+    if(party?.identifier?.id) return party.identifier.id;
+    let str = party.id;
     let parts = str.split('-');
     return parts[parts.length - 1];
 }
